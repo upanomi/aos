@@ -1,6 +1,6 @@
 package fi.tutti.client;
 
-import java.sql.Date;
+import java.util.Date;
 //import java.sql.DriverManager;
 //import java.sql.Connection;
 //import java.sql.ResultSet;

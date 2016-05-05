@@ -40,8 +40,7 @@ public class Koti implements iKoti, EntryPoint {
 
 	@Override
 	public boolean lisaaHuolto(String henk, String laite, Date pvm) {
-		// TODO Auto-generated method stub
-		return false;
+		return kanta.lisaaHuolto(henk, laite, pvm);
 	}
 
 	@Override
@@ -51,7 +50,19 @@ public class Koti implements iKoti, EntryPoint {
 	}
 
 	@Override
-	public Vector<String> haeHuollot(String nimi, int metodi) {
+	public Vector<Huolto> haeHuollot(String nimi, int metodi) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Laite> haeLaitteet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Henkilo> haeHenkilot() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -16,5 +16,7 @@ public interface iKoti {
 	//2 = henkilö historia
 	//3 = laite suunnitelma
 	//4 = laite historia
-	public Vector<String> haeHuollot(String nimi, int metodi);
+	public Vector<Huolto> haeHuollot(String nimi, int metodi);
+	public Vector<Laite> haeLaitteet();
+	public Vector<Henkilo> haeHenkilot();
 }
