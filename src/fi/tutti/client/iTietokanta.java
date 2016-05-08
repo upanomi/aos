@@ -22,4 +22,8 @@ public interface iTietokanta {
 	//3 = laite suunnitelma
 	//4 = laite historia
 	public Vector<Huolto> haeHuollot(String nimi, int metodi);
+	//Overload ilman parametreja hakemaan kaikki
+	public Vector<Huolto> haeHuollot();
+	
+	public boolean muutaStatus(int indeksi, int uusiStatus);
 }

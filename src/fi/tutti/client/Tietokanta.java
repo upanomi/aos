@@ -1,33 +1,9 @@
 package fi.tutti.client;
 
 import java.util.Date;
-//import java.sql.DriverManager;
-//import java.sql.Connection;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.sql.Statement;
-
-//import com.gargoylesoftware.htmlunit.Version;
-
 import java.util.Vector;
 
-
-//import com.google.appengine.api.utils.SystemProperty;
-//import com.google.cloud.sql.jdbc.*;
-//import com.mysql.jdbc.*;
-/*
-import com.google.appengine.api.utils.SystemProperty;
-import com.google.appengine.api.rdbms.AppEngineDriver;
-import com.google.cloud.sql.jdbc.Connection;
-import com.google.cloud.sql.jdbc.ResultSet;
-import com.google.cloud.sql.jdbc.Driver;
-*/
-
 public class Tietokanta  implements iTietokanta {
-	
-	/*static Connection conn = null;
-	static Statement stmt = null;
-	static ResultSet rs = null;*/
 	
 	private Vector<Huolto> huollot;
 	private Vector<Laite> laitteet;
@@ -42,87 +18,12 @@ public class Tietokanta  implements iTietokanta {
 		maxId = 0;
 		
 		
-		
-		//Yhdistäminen tietokantaan	
-		
-		//String url = "jdbc:google:mysql://aoslaitehuoltohallinta:laitehuoltokanta";
-		//String user = "root";
-		//String password = "aosmysql";
-		/*
-		try {
-			conn = DriverManager.getConnection(url, user, password);
-			stmt = conn.createStatement();
-		}
-		catch (SQLException ex){
-			//Logger lgr = Logger.getLogger(Version.class.getName());
-			//lgr.log(Level.SEVERE, ex.getMessage(), ex);
-			ex.printStackTrace();
-		}
-		*/
-		/*
-		String url = null;
-		if (SystemProperty.environment.value() ==
-		    SystemProperty.Environment.Value.Production) {
-			  // Connecting from App Engine.
-			  // Load the class that provides the "jdbc:google:mysql://"
-			  // prefix.
-				try {
-					Class.forName("com.mysql.jdbc.GoogleDriver");
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				url =
-		    "jdbc:google:mysql://aoslaitehuoltohallinta:laitehuoltokanta?user=root";
-		} else {
-			// Connecting from an external network.
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			
-			url = "jdbc:mysql://207.223.162.30:3306?user=root";
-		}
-		
-
-		//Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(url);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		/*
-		try {
-			ResultSet rs = conn.createStatement().executeQuery(
-			    "SELECT 1 + 1");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
-		
 	}
 	
 	@Override
 	public boolean uusiHenk(String nimi) {
 		boolean success = true;
-		//String sqlquery = "INSERT INTO henkilot " + nimi;
-		/*
- 		try {
-			conn.createStatement().executeQuery(sqlquery);
-			return true;
-		} catch (SQLException e){
-			e.printStackTrace();
-			return false;
-		}
-		*//*
-		try {
-			rs = stmt.executeQuery(sqlquery);
-		}
-		catch (SQLException ex){
-			success = false;
-			//Logger lgr = Logger.getLogger(Version.class.getName());
-			//lgr.log(Level.SEVERE, ex.getMessage(), ex);
-			ex.printStackTrace();
-		}*/
+		
 		for(int i = 0; i < henkilot.size(); i++){
 			if(henkilot.get(i).nimi == nimi){
 				return false;
@@ -288,4 +189,14 @@ public class Tietokanta  implements iTietokanta {
 		return null;
 	}
 
+	@Override
+	public boolean muutaStatus(int indeksi, int uusiStatus) {
+		huollot.get(indeksi).status = uusiStatus;
+		return true;
+	}
+
+	@Override
+	public Vector<Huolto> haeHuollot(){
+		return huollot;
+	}
 }

@@ -16,8 +16,25 @@ public class Koti implements iKoti, EntryPoint {
 	public void onModuleLoad(){
 		kayttoliittyma = new GUI(this);
 		kanta = new Tietokanta();
+		huoltoTarkistus();
 	}
 
+	
+	//Metodi tarkistamaan ja mahdollisesti muuttamaan huoltojen status
+	//sekä pamauttamaan hälytys ikkuna GUI:hin
+	private void huoltoTarkistus(){
+		Date nyt = new Date();
+		Vector<Huolto> huollot = kanta.haeHuollot();
+		
+		for(int i = 0; i < huollot.size(); i++){
+			if(huollot.get(i).pvm == nyt &&
+				huollot.get(i).status == 0){
+				kanta.muutaStatus(huollot.get(i).id, 1);
+				kayttoliittyma.halyta();
+			}
+		}
+	};
+	
 	@Override
 	public boolean uusiHenk(String nimi) {
 		return kanta.uusiHenk(nimi);
@@ -45,26 +62,22 @@ public class Koti implements iKoti, EntryPoint {
 
 	@Override
 	public boolean kuittaaHuolto(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		return kanta.kuittaaHuolto(id);
 	}
 
 	@Override
 	public Vector<Huolto> haeHuollot(String nimi, int metodi) {
-		// TODO Auto-generated method stub
-		return null;
+		return kanta.haeHuollot(nimi,  metodi);
 	}
 
 	@Override
 	public Vector<Laite> haeLaitteet() {
-		// TODO Auto-generated method stub
-		return null;
+		return kanta.haeLaite();
 	}
 
 	@Override
 	public Vector<Henkilo> haeHenkilot() {
-		// TODO Auto-generated method stub
-		return null;
+		return kanta.haeHenk();
 	}
 
 }
