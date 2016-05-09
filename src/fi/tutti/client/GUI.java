@@ -23,6 +23,9 @@ import com.google.gwt.user.datepicker.client.DateBox;
 public class GUI implements iGUI {
 	
 	private Koti main_;
+	private ListBox henkLista;
+	private ListBox laiteLista;
+	private CellTable<Huolto> nayttoRuutu;
 	
 	public GUI(Koti main){
 		main_ = main;
@@ -38,14 +41,18 @@ public class GUI implements iGUI {
 				new Huolto());
 
 		//M‰‰ritell‰‰n tarvittavat komponentit
-		final ListBox henkLista = new ListBox();
-		final ListBox laiteLista = new ListBox();
+		henkLista = new ListBox();
+		laiteLista  = new ListBox();
+		
 		Button henkSuunn = new Button("Huoltosuunnitelma");
 		Button henkHist = new Button("Huoltohistoria");
+		
 		Button henkUusi = new Button("Luo uusi");
 		Button henkPoista = new Button("Poista");
+		
 		Button laiteSuunn = new Button("Huoltosuunnitelma");
 		Button laiteHist = new Button("Huoltohistoria");
+		
 		Button laiteUusi = new Button("Luo uusi");
 		Button laitePoista = new Button("Poista", new ClickHandler(){
 			@Override
@@ -58,7 +65,14 @@ public class GUI implements iGUI {
 		Button huoltoKuitt = new Button("Kuittaa");
 		//FlexTable nayttoRuutu = new FlexTable();
 		
-		CellTable<Huolto> nayttoRuutu = new CellTable<Huolto>();
+		nayttoRuutu = new CellTable<Huolto>();
+		TextColumn<Huolto> idSarake =  new TextColumn<Huolto>(){
+			@Override
+			public String getValue(Huolto obj){
+				return Integer.toString(obj.id);
+			}
+		};
+		
 		TextColumn<Huolto> henkSarake = new TextColumn<Huolto>(){
 			@Override
 			public String getValue(Huolto obj){
@@ -79,9 +93,54 @@ public class GUI implements iGUI {
 				return obj.pvm.toString();
 			}
 		};
+		nayttoRuutu.addColumn(idSarake, "Id");
 		nayttoRuutu.addColumn(henkSarake, "Henkilo");
 		nayttoRuutu.addColumn(laiteSarake, "Laite");
 		nayttoRuutu.addColumn(pvmSarake, "Deadline");
+		
+		henkSuunn.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				Vector<Huolto> huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 1);
+				nayttoRuutu.setRowCount(huollot1.size(), true);
+				nayttoRuutu.setRowData(0, huollot1);
+			}
+		});
+		
+		henkHist.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				Vector<Huolto> huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 2);
+				nayttoRuutu.setRowCount(huollot1.size(), true);
+				nayttoRuutu.setRowData(0, huollot1);
+			}
+		});
+		
+		laiteSuunn.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				Vector<Huolto> huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 3);
+				nayttoRuutu.setRowCount(huollot1.size(), true);
+				nayttoRuutu.setRowData(0, huollot1);
+			}
+		});
+		
+		laiteHist.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				Vector<Huolto> huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 4);
+				nayttoRuutu.setRowCount(huollot1.size(), true);
+				nayttoRuutu.setRowData(0, huollot1);
+			}
+		});
 		
 		nayttoRuutu.setRowCount(huollot.size(), true);
 		nayttoRuutu.setRowData(0,huollot);
@@ -136,14 +195,12 @@ public class GUI implements iGUI {
 			@Override
 			public void onClick(ClickEvent event){
 				if(main_.uusiHenk(nimiLaatikko.getValue())){
-					//Vapaaehtoinen hifistely
-					/*
-					Vector<String> vector = main_.haeHenkilot();
+					
+					Vector<Henkilo> vector = main_.haeHenkilot();
 					henkLista.clear();
 					for(int i = 0; i < vector.size(); i++){
-						henkLista.addItem(vector.elementAt(i));
+						henkLista.addItem(vector.elementAt(i).nimi);
 					}
-					*/
 				}
 				henkRuutu.hide();
 			}
@@ -171,13 +228,11 @@ public class GUI implements iGUI {
 				if(main_.uusiLaite(laiteLaatikko.getValue())){
 					//Jollei kutsuta p‰ivit‰ funktiota niin tarvitaan uusi metodi, joka hakee vain laitteet
 					//Vapaaehtoinen hifistely
-					/*
-					Vector<String> vector = main_.haeLaitteet();
+					Vector<Laite> vector = main_.haeLaitteet();
 					laiteLista.clear();
 					for(int i = 0; i < vector.size(); i++){
-						laiteLista.addItem(vector.elementAt(i));
+						laiteLista.addItem(vector.elementAt(i).nimi);
 					}
-					*/
 				}
 				laiteRuutu.hide();
 			}
@@ -206,15 +261,17 @@ public class GUI implements iGUI {
 		Button uusiHuoltoOk = new Button("OK");
 		
 		henkLista2.setVisibleItemCount(1);
-		henkLista2.addItem("Henkilo A");
-		henkLista2.addItem("Henkilo B");
-		henkLista2.addItem("Henkilo C");
-		henkLista2.addItem("Henkilo D");
+		Vector<Henkilo> vector1 = main_.haeHenkilot();
+		henkLista2.clear();
+		for(int i = 0; i < vector1.size(); i++){
+			henkLista2.addItem(vector1.elementAt(i).nimi);
+		}
 		laiteLista2.setVisibleItemCount(1);
-		laiteLista2.addItem("Laite A");
-		laiteLista2.addItem("Laite B");
-		laiteLista2.addItem("Laite C");
-		laiteLista2.addItem("Laite D");
+		Vector<Laite> vector2 = main_.haeLaitteet();
+		laiteLista2.clear();
+		for(int i = 0; i < vector2.size(); i++){
+			laiteLista2.addItem(vector2.elementAt(i).nimi);
+		}
 		
 		ylempi.add(henkLista2);
 		ylempi.add(laiteLista2);
@@ -235,15 +292,17 @@ public class GUI implements iGUI {
 		*/
 		//M‰‰ritell‰‰n henkilˆiden listaus
 		//T‰m‰ tulee automatisoida kunhan p‰‰st‰‰n varsinaiseen toiminnallisuuteen
-		henkLista.addItem("Henkilo A");
-		henkLista.addItem("Henkilo B");
-		henkLista.addItem("Henkilo C");
-		henkLista.addItem("Henkilo D");
+		vector1 = main_.haeHenkilot();
+		henkLista.clear();
+		for(int i = 0; i < vector1.size(); i++){
+			henkLista.addItem(vector1.elementAt(i).nimi);
+		}
 		
-		laiteLista.addItem("Laite A");
-		laiteLista.addItem("Laite B");
-		laiteLista.addItem("Laite C");
-		laiteLista.addItem("Laite D");
+		vector2 = main_.haeLaitteet();
+		laiteLista.clear();
+		for(int i = 0; i < vector2.size(); i++){
+			laiteLista.addItem(vector2.elementAt(i).nimi);
+		}
 		
 		//M‰‰ritell‰‰n monta elementti‰ on n‰kyvill‰
 		henkLista.setVisibleItemCount(4);
@@ -348,7 +407,14 @@ public class GUI implements iGUI {
 
 	@Override
 	public void paivita(Vector<Henkilo> henkilot, Vector<Laite> laitteet) {
-		// TODO Auto-generated method stub
+		henkLista.clear();
+		laiteLista.clear();
+		for(int i = 0; i < henkilot.size(); i++){
+			henkLista.addItem(henkilot.elementAt(i).nimi);
+		}
+		for(int i = 0; i < laitteet.size(); i++){
+			laiteLista.addItem(laitteet.elementAt(i).nimi);
+		}
 		
 	}
 
