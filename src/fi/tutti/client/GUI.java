@@ -1,11 +1,7 @@
 package fi.tutti.client;
 
-import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -13,6 +9,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -36,9 +33,7 @@ public class GUI implements iGUI {
 	//Vector<Henkilo>, Vector<Laite>	
 	@Override
 	public void alusta() {
-		List<Huolto> huollot = Arrays.asList(
-				new Huolto(),
-				new Huolto());
+		Vector<Huolto> huollot = new Vector<Huolto>();
 
 		//M‰‰ritell‰‰n tarvittavat komponentit
 		henkLista = new ListBox();
@@ -282,14 +277,14 @@ public class GUI implements iGUI {
 		huoltoRuutu.add(huoltoTausta);
 		huoltoRuutu.setGlassEnabled(true);
 		
-		/*
+		
 		//M‰‰ritell‰‰n varoitusruutu
 		Label varTeksti = new Label();
 		varTeksti.setText("Jokin huolto on myohassa. Tarkista suunnitelma!");
 		
 		varoitusRuutu.setText("Varoitus");
 		varoitusRuutu.add(varTeksti);
-		*/
+		
 		//M‰‰ritell‰‰n henkilˆiden listaus
 		//T‰m‰ tulee automatisoida kunhan p‰‰st‰‰n varsinaiseen toiminnallisuuteen
 		vector1 = main_.haeHenkilot();
@@ -397,8 +392,10 @@ public class GUI implements iGUI {
 		uusiHuoltoOk.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event){
 				if(main_.lisaaHuolto(henkLista2.getSelectedItemText(), laiteLista2.getSelectedItemText(), uusiPvm.getValue())){
-						//Jotain t‰h‰n?
-					}
+					
+					
+					//TODO
+				}
 				huoltoRuutu.hide();
 			}
 		});

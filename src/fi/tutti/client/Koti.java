@@ -14,8 +14,9 @@ public class Koti implements iKoti, EntryPoint {
 	
 	@Override
 	public void onModuleLoad(){
-		kayttoliittyma = new GUI(this);
 		kanta = new Tietokanta();
+		kayttoliittyma = new GUI(this);
+		
 		huoltoTarkistus();
 	}
 
