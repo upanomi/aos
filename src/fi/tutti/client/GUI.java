@@ -16,6 +16,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
+import fi.tutti.shared.Henkilo;
+import fi.tutti.shared.Huolto;
+import fi.tutti.shared.Laite;
+
 
 public class GUI implements iGUI {
 	

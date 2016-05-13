@@ -1,4 +1,4 @@
-package fi.tutti.client;
+package fi.tutti.shared;
 
 import java.util.Date;
 

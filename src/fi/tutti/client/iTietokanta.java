@@ -5,6 +5,10 @@ import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+import fi.tutti.shared.Henkilo;
+import fi.tutti.shared.Huolto;
+import fi.tutti.shared.Laite;
+
 public interface iTietokanta extends RemoteService {
 	public boolean uusiHenk(String nimi);
 	public boolean uusiLaite(String nimi);

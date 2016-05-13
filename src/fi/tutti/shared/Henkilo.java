@@ -1,4 +1,4 @@
-package fi.tutti.client;
+package fi.tutti.shared;
 
 public class Henkilo {
 	public String nimi;

@@ -7,6 +7,10 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import fi.tutti.shared.Henkilo;
+import fi.tutti.shared.Huolto;
+import fi.tutti.shared.Laite;
+
 //import fi.tutti.client.iTietokanta;
 
 

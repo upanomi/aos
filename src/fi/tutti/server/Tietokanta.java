@@ -5,10 +5,10 @@ import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import fi.tutti.client.Henkilo;
-import fi.tutti.client.Huolto;
-import fi.tutti.client.Laite;
 import fi.tutti.client.iTietokanta;
+import fi.tutti.shared.Henkilo;
+import fi.tutti.shared.Huolto;
+import fi.tutti.shared.Laite;
 
 @SuppressWarnings("serial")
 public class Tietokanta extends RemoteServiceServlet  implements iTietokanta {

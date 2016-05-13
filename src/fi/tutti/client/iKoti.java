@@ -3,6 +3,10 @@ package fi.tutti.client;
 import java.util.Date;
 import java.util.Vector;
 
+import fi.tutti.shared.Henkilo;
+import fi.tutti.shared.Huolto;
+import fi.tutti.shared.Laite;
+
 public interface iKoti {
 	public boolean uusiHenk(String nimi);
 	public boolean uusiLaite(String nimi);
