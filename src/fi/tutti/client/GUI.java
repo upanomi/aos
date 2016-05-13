@@ -18,7 +18,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 
 public class GUI implements iGUI {
-	
+	private DialogBox varoitusRuutu;
 	private Koti main_;
 	private ListBox henkLista;
 	private ListBox laiteLista;
@@ -34,6 +34,7 @@ public class GUI implements iGUI {
 	@Override
 	public void alusta() {
 		Vector<Huolto> huollot = new Vector<Huolto>();
+		varoitusRuutu = new DialogBox();
 
 		//M‰‰ritell‰‰n tarvittavat komponentit
 		henkLista = new ListBox();
@@ -176,7 +177,6 @@ public class GUI implements iGUI {
 		final DialogBox henkRuutu = new DialogBox();
 		final DialogBox laiteRuutu = new DialogBox();
 		final DialogBox huoltoRuutu = new DialogBox();
-		final DialogBox varoitusRuutu = new DialogBox();
 		
 		//M‰‰ritet‰‰n uuden henkilˆn lis‰ys ruutu
 		henkRuutu.hide();
@@ -250,26 +250,26 @@ public class GUI implements iGUI {
 		HorizontalPanel ylempi = new HorizontalPanel();
 		HorizontalPanel alempi = new HorizontalPanel();
 		VerticalPanel huoltoTausta = new VerticalPanel();
-		final ListBox henkLista2 = new ListBox();
-		final ListBox laiteLista2 = new ListBox();
+		//final ListBox henkLista2 = new ListBox();
+		//final ListBox laiteLista2 = new ListBox();
 		final DateBox uusiPvm = new DateBox();
 		Button uusiHuoltoOk = new Button("OK");
 		
-		henkLista2.setVisibleItemCount(1);
+		//henkLista2.setVisibleItemCount(1);
 		Vector<Henkilo> vector1 = main_.haeHenkilot();
-		henkLista2.clear();
+		/*henkLista2.clear();
 		for(int i = 0; i < vector1.size(); i++){
-			henkLista2.addItem(vector1.elementAt(i).nimi);
-		}
-		laiteLista2.setVisibleItemCount(1);
+			//henkLista2.addItem(vector1.elementAt(i).nimi);
+		} */
+		//laiteLista2.setVisibleItemCount(1);
 		Vector<Laite> vector2 = main_.haeLaitteet();
-		laiteLista2.clear();
+		/*laiteLista2.clear();
 		for(int i = 0; i < vector2.size(); i++){
 			laiteLista2.addItem(vector2.elementAt(i).nimi);
 		}
-		
-		ylempi.add(henkLista2);
-		ylempi.add(laiteLista2);
+		*/
+		ylempi.add(henkLista);
+		ylempi.add(laiteLista);
 		alempi.add(uusiPvm);
 		alempi.add(uusiHuoltoOk);
 		huoltoTausta.add(ylempi);
@@ -279,11 +279,31 @@ public class GUI implements iGUI {
 		
 		
 		//M‰‰ritell‰‰n varoitusruutu
+		varoitusRuutu.hide();
+		varoitusRuutu.setWidth("200px");
+		varoitusRuutu.setHeight("200px");
+		varoitusRuutu.setPopupPosition(500, 0);
+		VerticalPanel varoitusTausta = new VerticalPanel();
+		HorizontalPanel ylempi2 = new HorizontalPanel();
 		Label varTeksti = new Label();
 		varTeksti.setText("Jokin huolto on myohassa. Tarkista suunnitelma!");
-		
 		varoitusRuutu.setText("Varoitus");
 		varoitusRuutu.add(varTeksti);
+		
+		Button varoitusOK = new Button("OK");
+		varoitusOK.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				varoitusRuutu.hide();
+			}
+		});
+		
+		ylempi2.add(varoitusOK);
+		varoitusTausta.add(ylempi2);
+		varoitusRuutu.add(varoitusTausta);
+		varoitusRuutu.setGlassEnabled(true);
 		
 		//M‰‰ritell‰‰n henkilˆiden listaus
 		//T‰m‰ tulee automatisoida kunhan p‰‰st‰‰n varsinaiseen toiminnallisuuteen
@@ -391,7 +411,7 @@ public class GUI implements iGUI {
 		//Ja sulkeminen
 		uusiHuoltoOk.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event){
-				if(main_.lisaaHuolto(henkLista2.getSelectedItemText(), laiteLista2.getSelectedItemText(), uusiPvm.getValue())){
+				if(main_.lisaaHuolto(henkLista.getSelectedItemText(), laiteLista.getSelectedItemText(), uusiPvm.getValue())){
 					
 					
 					//TODO
@@ -417,8 +437,7 @@ public class GUI implements iGUI {
 
 	@Override
 	public void halyta() {
-		// TODO Auto-generated method stub
-		
+		varoitusRuutu.show();	
 	}
 
 }
