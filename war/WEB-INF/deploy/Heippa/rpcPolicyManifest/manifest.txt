@@ -1,2 +1,3 @@
 # Module Heippa
 # RPC service class, partial path of RPC policy file
+fi.tutti.client.iTietokanta, 51E52929B78907595E0AF508B420456F.gwt.rpc

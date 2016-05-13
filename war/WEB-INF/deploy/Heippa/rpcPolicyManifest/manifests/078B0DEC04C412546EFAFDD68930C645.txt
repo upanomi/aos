@@ -1,0 +1,2 @@
+serviceClass: fi.tutti.client.iTietokanta
+path: 51E52929B78907595E0AF508B420456F.gwt.rpc

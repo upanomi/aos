@@ -1,22 +1,33 @@
 package fi.tutti.client;
 
 import java.util.Date;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Vector;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+//import fi.tutti.client.iTietokanta;
 
 
 public class Koti implements iKoti, EntryPoint {		
-	GUI kayttoliittyma;
-	Tietokanta kanta;
+	private final iTietokantaAsync kanta = GWT.create(iTietokanta.class);
+	private GUI kayttoliittyma;
+	private Date nyt;
+	private boolean apuBool;
+	private Vector<Huolto> apuHuolto;
+	private Vector<Laite> apuLaite;
+	private Vector<Henkilo> apuHenkilo;
 	
 	@Override
 	public void onModuleLoad(){
-		kanta = new Tietokanta();
+		//kanta = GWT.create(iTietokanta.class); 
 		kayttoliittyma = new GUI(this);
-		
+		nyt = new Date();
+		apuBool = false;
+		apuHuolto = new Vector<Huolto>();
+		apuLaite = new Vector<Laite>();
+		apuHenkilo = new Vector<Henkilo>();
 		huoltoTarkistus();
 	}
 
@@ -24,61 +35,146 @@ public class Koti implements iKoti, EntryPoint {
 	//Metodi tarkistamaan ja mahdollisesti muuttamaan huoltojen status
 	//sek‰ pamauttamaan h‰lytys ikkuna GUI:hin
 	private void huoltoTarkistus(){
-		Date nyt = new Date();
-		Vector<Huolto> huollot = kanta.haeHuollot();
-		
-		for(int i = 0; i < huollot.size(); i++){
-			if(huollot.get(i).pvm == nyt &&
-				huollot.get(i).status == 0){
-				kanta.muutaStatus(huollot.get(i).id, 1);
-				kayttoliittyma.halyta();
+		nyt = new Date();
+		kanta.haeHuollot(new AsyncCallback<Vector<Huolto>>() {
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
 			}
-		}
+
+			public void onSuccess(Vector<Huolto> result) {
+				for(int i = 0; i < result.size(); i++){
+					if(result.get(i).pvm == nyt &&
+						result.get(i).status == 0){
+						kanta.muutaStatus(result.get(i).id, 1, new AsyncCallback<Boolean>(){
+							public void onFailure(Throwable caught){
+								caught.printStackTrace();
+							}
+							public void onSuccess(Boolean result){
+								//Eip‰ t‰ss‰ varmaan mit‰‰n jakseta tehd‰
+							}
+						});
+						kayttoliittyma.halyta();
+					}
+				}
+			}
+		});
 	};
 	
 	@Override
 	public boolean uusiHenk(String nimi) {
-		return kanta.uusiHenk(nimi);
+		kanta.uusiHenk(nimi, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public boolean uusiLaite(String nimi) {
-		return kanta.uusiLaite(nimi);
+		kanta.uusiLaite(nimi, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public boolean poistaHenk(String nimi) {
-		return kanta.poistaHenk(nimi);
+		kanta.poistaHenk(nimi, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public boolean poistaLaite(String nimi) {
-		return kanta.poistaLaite(nimi);
+		kanta.poistaLaite(nimi, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public boolean lisaaHuolto(String henk, String laite, Date pvm) {
-		return kanta.lisaaHuolto(henk, laite, pvm);
+		kanta.lisaaHuolto(henk, laite, pvm, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public boolean kuittaaHuolto(int id) {
-		return kanta.kuittaaHuolto(id);
+		kanta.kuittaaHuolto(id, new AsyncCallback<Boolean>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Boolean result){
+				apuBool = result;
+			}
+		});
+		return apuBool;
 	}
 
 	@Override
 	public Vector<Huolto> haeHuollot(String nimi, int metodi) {
-		return kanta.haeHuollot(nimi,  metodi);
+		kanta.haeHuollot(nimi,  metodi, new AsyncCallback<Vector<Huolto>>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Vector<Huolto> result){
+				apuHuolto = result;
+			}
+		});
+		return apuHuolto;
 	}
 
 	@Override
 	public Vector<Laite> haeLaitteet() {
-		return kanta.haeLaite();
+		kanta.haeLaite(new AsyncCallback<Vector<Laite>>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Vector<Laite> result){
+				apuLaite = result;
+			}
+		});
+		return apuLaite;
 	}
 
 	@Override
 	public Vector<Henkilo> haeHenkilot() {
-		return kanta.haeHenk();
+		kanta.haeHenk(new AsyncCallback<Vector<Henkilo>>(){
+			public void onFailure(Throwable caught){
+				caught.printStackTrace();
+			}
+			public void onSuccess(Vector<Henkilo> result){
+				apuHenkilo = result;
+			}
+		});
+		return apuHenkilo;
 	}
 
 }

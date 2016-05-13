@@ -3,7 +3,9 @@ package fi.tutti.client;
 import java.util.Date;
 import java.util.Vector;
 
-public interface iTietokanta {
+import com.google.gwt.user.client.rpc.RemoteService;
+
+public interface iTietokanta extends RemoteService {
 	public boolean uusiHenk(String nimi);
 	public boolean uusiLaite(String nimi);
 	public boolean poistaHenk(String nimi);
