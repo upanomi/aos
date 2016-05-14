@@ -443,6 +443,13 @@ public class GUI implements iGUI {
 		henkLista.clear();
 		laiteLista.clear();
 		
+		for(int i = 0; i < henkilot.size(); i++){
+			henkLista.addItem(henkilot.elementAt(i).nimi);
+		}
+		for(int i = 0; i < laitteet.size(); i++){
+			laiteLista.addItem(laitteet.elementAt(i).nimi);
+		}
+		
 		vasenPaneeli.add(henkLista);
 		vasenPaneeli.add(laiteLista);
 		
@@ -471,13 +478,7 @@ public class GUI implements iGUI {
 		tausta.add(oikeaPaneeli);
 
 		RootPanel.get().add(tausta);
-		
-		for(int i = 0; i < henkilot.size(); i++){
-			henkLista.addItem(henkilot.elementAt(i).nimi);
-		}
-		for(int i = 0; i < laitteet.size(); i++){
-			laiteLista.addItem(laitteet.elementAt(i).nimi);
-		}
+
 		
 	}
 
