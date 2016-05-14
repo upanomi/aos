@@ -31,6 +31,7 @@ public class Koti implements iKoti, EntryPoint {
 			if(huollot.get(i).pvm == nyt &&
 				huollot.get(i).status == 0){
 				kanta.muutaStatus(huollot.get(i).id, 1);
+				kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 				kayttoliittyma.halyta();
 			}
 		}
@@ -38,38 +39,44 @@ public class Koti implements iKoti, EntryPoint {
 	
 	@Override
 	public boolean uusiHenk(String nimi) {
+		boolean tulos = kanta.uusiHenk(nimi);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.uusiHenk(nimi);
+		return tulos;
 	}
 
 	@Override
 	public boolean uusiLaite(String nimi) {
+		boolean tulos = kanta.uusiLaite(nimi);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.uusiLaite(nimi);
+		return tulos;
 	}
 
 	@Override
 	public boolean poistaHenk(String nimi) {
+		boolean tulos = kanta.poistaHenk(nimi);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.poistaHenk(nimi);
+		return tulos;
 	}
 
 	@Override
 	public boolean poistaLaite(String nimi) {
+		boolean tulos = kanta.poistaLaite(nimi);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.poistaLaite(nimi);
+		return tulos;
 	}
 
 	@Override
 	public boolean lisaaHuolto(String henk, String laite, Date pvm) {
+		boolean tulos = kanta.lisaaHuolto(henk, laite, pvm);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.lisaaHuolto(henk, laite, pvm);
+		return tulos;
 	}
 
 	@Override
 	public boolean kuittaaHuolto(int id) {
+		boolean tulos = kanta.kuittaaHuolto(id);
 		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
-		return kanta.kuittaaHuolto(id);
+		return tulos;
 	}
 
 	@Override

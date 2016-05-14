@@ -45,6 +45,11 @@ public class GUI implements iGUI {
 	private Button huoltoUusi;
 	private Button huoltoKuitt;
 	
+	private DialogBox henkRuutu;
+	private DialogBox laiteRuutu;
+	private DialogBox huoltoRuutu;
+	private DialogBox varoitusRuutu;
+	
 	public GUI(Koti main){
 		main_ = main;
 		alusta();
@@ -194,10 +199,10 @@ public class GUI implements iGUI {
 		oikeaPaneeli.setWidth("250px");
 		
 		//Luodaan popup ikkunat
-		final DialogBox henkRuutu = new DialogBox();
-		final DialogBox laiteRuutu = new DialogBox();
-		final DialogBox huoltoRuutu = new DialogBox();
-		final DialogBox varoitusRuutu = new DialogBox();
+		henkRuutu = new DialogBox();
+		laiteRuutu = new DialogBox();
+		huoltoRuutu = new DialogBox();
+		varoitusRuutu = new DialogBox();
 		
 		//Määritetään uuden henkilön lisäys ruutu
 		henkRuutu.hide();
@@ -388,11 +393,20 @@ public class GUI implements iGUI {
 					for(int i = 0; i < vector.size(); i++){
 						laiteLista2.addItem(vector.elementAt(i));
 					}
-				}
+			}
 				laiteRuutu.hide();
 			}
 		});
 		*/
+		
+		huoltoKuitt.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event){
+				int rivi = nayttoRuutu.getKeyboardSelectedRow();
+				Huolto valittu = nayttoRuutu.getVisibleItem(rivi);
+				main_.kuittaaHuolto(valittu.id);
+			}
+		});
 		
 		//Huollon lisäys ruutu
 		huoltoUusi.addClickHandler(new ClickHandler() {
@@ -416,7 +430,7 @@ public class GUI implements iGUI {
 		uusiHuoltoOk.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event){
 				if(main_.lisaaHuolto(henkLista2.getSelectedItemText(), laiteLista2.getSelectedItemText(), uusiPvm.getValue())){
-					//TODO
+					
 				}
 				huoltoRuutu.hide();
 			}
@@ -469,7 +483,7 @@ public class GUI implements iGUI {
 
 	@Override
 	public void halyta() {
-		//varoitusRuutu.show();
+		varoitusRuutu.show();
 		
 	}
 
