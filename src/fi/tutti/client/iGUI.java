@@ -7,5 +7,4 @@ public interface iGUI {
 	
 	public void paivita(Vector<Henkilo> henkilot, Vector<Laite> laitteet);
 	public void halyta();
-
 }

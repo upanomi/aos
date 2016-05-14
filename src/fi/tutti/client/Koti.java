@@ -38,31 +38,37 @@ public class Koti implements iKoti, EntryPoint {
 	
 	@Override
 	public boolean uusiHenk(String nimi) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.uusiHenk(nimi);
 	}
 
 	@Override
 	public boolean uusiLaite(String nimi) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.uusiLaite(nimi);
 	}
 
 	@Override
 	public boolean poistaHenk(String nimi) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.poistaHenk(nimi);
 	}
 
 	@Override
 	public boolean poistaLaite(String nimi) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.poistaLaite(nimi);
 	}
 
 	@Override
 	public boolean lisaaHuolto(String henk, String laite, Date pvm) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.lisaaHuolto(henk, laite, pvm);
 	}
 
 	@Override
 	public boolean kuittaaHuolto(int id) {
+		kayttoliittyma.paivita(kanta.haeHenk(), kanta.haeLaite());
 		return kanta.kuittaaHuolto(id);
 	}
 

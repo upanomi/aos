@@ -22,7 +22,28 @@ public class GUI implements iGUI {
 	private Koti main_;
 	private ListBox henkLista;
 	private ListBox laiteLista;
+	private ListBox henkLista2;
+	private ListBox laiteLista2;
 	private CellTable<Huolto> nayttoRuutu;
+	private HorizontalPanel ylempi;
+	private HorizontalPanel alempi;
+	private VerticalPanel huoltoTausta;
+	private Button uusiHuoltoOk;
+	private HorizontalPanel tausta;
+	private VerticalPanel vasenPaneeli;
+	private VerticalPanel keskiPaneeli;
+	private VerticalPanel oikeaPaneeli;
+	private HorizontalPanel alaPaneeli;
+	private Button henkSuunn;
+	private Button henkHist;
+	private Button henkUusi;
+	private Button henkPoista;
+	private Button laiteSuunn;
+	private Button laiteHist;
+	private Button laiteUusi;
+	private Button laitePoista;
+	private Button huoltoUusi;
+	private Button huoltoKuitt;
 	
 	public GUI(Koti main){
 		main_ = main;
@@ -39,25 +60,25 @@ public class GUI implements iGUI {
 		henkLista = new ListBox();
 		laiteLista  = new ListBox();
 		
-		Button henkSuunn = new Button("Huoltosuunnitelma");
-		Button henkHist = new Button("Huoltohistoria");
+		henkSuunn = new Button("Huoltosuunnitelma");
+		henkHist = new Button("Huoltohistoria");
 		
-		Button henkUusi = new Button("Luo uusi");
-		Button henkPoista = new Button("Poista");
+		henkUusi = new Button("Luo uusi");
+		henkPoista = new Button("Poista");
 		
-		Button laiteSuunn = new Button("Huoltosuunnitelma");
-		Button laiteHist = new Button("Huoltohistoria");
+		laiteSuunn = new Button("Huoltosuunnitelma");
+		laiteHist = new Button("Huoltohistoria");
 		
-		Button laiteUusi = new Button("Luo uusi");
-		Button laitePoista = new Button("Poista", new ClickHandler(){
+		laiteUusi = new Button("Luo uusi");
+		laitePoista = new Button("Poista", new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event){
 				main_.poistaLaite(laiteLista.getSelectedItemText());
 				laiteLista.removeItem(laiteLista.getSelectedIndex());
 			}
 		});
-		Button huoltoUusi = new Button("Laadi uusi huolto");
-		Button huoltoKuitt = new Button("Kuittaa");
+		huoltoUusi = new Button("Laadi uusi huolto");
+		huoltoKuitt = new Button("Kuittaa");
 		//FlexTable nayttoRuutu = new FlexTable();
 		
 		nayttoRuutu = new CellTable<Huolto>();
@@ -142,11 +163,11 @@ public class GUI implements iGUI {
 		
 		
 		//M‰‰ritell‰‰n tarvittavat paneelit
-		HorizontalPanel tausta = new HorizontalPanel();
-		VerticalPanel vasenPaneeli = new VerticalPanel();
-		VerticalPanel keskiPaneeli = new VerticalPanel();
-		VerticalPanel oikeaPaneeli = new VerticalPanel();
-		HorizontalPanel alaPaneeli = new HorizontalPanel();
+		tausta = new HorizontalPanel();
+		vasenPaneeli = new VerticalPanel();
+		keskiPaneeli = new VerticalPanel();
+		oikeaPaneeli = new VerticalPanel();
+		alaPaneeli = new HorizontalPanel();
 		
 		
 		vasenPaneeli.add(henkLista);
@@ -247,35 +268,28 @@ public class GUI implements iGUI {
 		huoltoRuutu.setHeight("200px");
 		huoltoRuutu.setPopupPosition(500, 0);
 		
-		HorizontalPanel ylempi = new HorizontalPanel();
-		HorizontalPanel alempi = new HorizontalPanel();
-		VerticalPanel huoltoTausta = new VerticalPanel();
-		final ListBox henkLista2 = new ListBox();
-		final ListBox laiteLista2 = new ListBox();
+		ylempi = new HorizontalPanel();
+		alempi = new HorizontalPanel();
+		huoltoTausta = new VerticalPanel();
+		henkLista2 = new ListBox();
+		laiteLista2 = new ListBox();
 		final DateBox uusiPvm = new DateBox();
-		Button uusiHuoltoOk = new Button("OK");
+		uusiHuoltoOk = new Button("OK");
 		
 		henkLista2.setVisibleItemCount(1);
 		Vector<Henkilo> vector1 = main_.haeHenkilot();
-		henkLista2.clear();
+		//henkLista2.clear();
 		for(int i = 0; i < vector1.size(); i++){
 			henkLista2.addItem(vector1.elementAt(i).nimi);
 		}
 		laiteLista2.setVisibleItemCount(1);
 		Vector<Laite> vector2 = main_.haeLaitteet();
-		laiteLista2.clear();
+		//laiteLista2.clear();
 		for(int i = 0; i < vector2.size(); i++){
 			laiteLista2.addItem(vector2.elementAt(i).nimi);
 		}
 		
-		ylempi.add(henkLista2);
-		ylempi.add(laiteLista2);
-		alempi.add(uusiPvm);
-		alempi.add(uusiHuoltoOk);
-		huoltoTausta.add(ylempi);
-		huoltoTausta.add(alempi);
-		huoltoRuutu.add(huoltoTausta);
-		huoltoRuutu.setGlassEnabled(true);
+		
 		
 		
 		//M‰‰ritell‰‰n varoitusruutu
@@ -385,6 +399,16 @@ public class GUI implements iGUI {
 			
 			@Override
 			public void onClick(ClickEvent event){
+				laiteLista2 = laiteLista;
+				henkLista2 = henkLista;
+				ylempi.add(henkLista2);
+				ylempi.add(laiteLista2);
+				alempi.add(uusiPvm);
+				alempi.add(uusiHuoltoOk);
+				huoltoTausta.add(ylempi);
+				huoltoTausta.add(alempi);
+				huoltoRuutu.add(huoltoTausta);
+				huoltoRuutu.setGlassEnabled(true);
 				huoltoRuutu.show();
 			}
 		});
@@ -392,8 +416,6 @@ public class GUI implements iGUI {
 		uusiHuoltoOk.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event){
 				if(main_.lisaaHuolto(henkLista2.getSelectedItemText(), laiteLista2.getSelectedItemText(), uusiPvm.getValue())){
-					
-					
 					//TODO
 				}
 				huoltoRuutu.hide();
@@ -406,6 +428,36 @@ public class GUI implements iGUI {
 	public void paivita(Vector<Henkilo> henkilot, Vector<Laite> laitteet) {
 		henkLista.clear();
 		laiteLista.clear();
+		
+		vasenPaneeli.add(henkLista);
+		vasenPaneeli.add(laiteLista);
+		
+		keskiPaneeli.add(henkSuunn);
+		keskiPaneeli.add(henkHist);
+		keskiPaneeli.add(henkUusi);
+		keskiPaneeli.add(henkPoista);
+		keskiPaneeli.add(laiteSuunn);
+		keskiPaneeli.add(laiteHist);
+		keskiPaneeli.add(laiteUusi);
+		keskiPaneeli.add(laitePoista);
+		
+		alaPaneeli.add(huoltoUusi);
+		alaPaneeli.add(huoltoKuitt);
+		
+		oikeaPaneeli.add(nayttoRuutu);
+		oikeaPaneeli.add(alaPaneeli);
+		
+		vasenPaneeli.setHeight("200px");
+		keskiPaneeli.setHeight("200px");
+		oikeaPaneeli.setHeight("200px");
+		oikeaPaneeli.setWidth("250px");
+		
+		tausta.add(vasenPaneeli);
+		tausta.add(keskiPaneeli);
+		tausta.add(oikeaPaneeli);
+
+		RootPanel.get().add(tausta);
+		
 		for(int i = 0; i < henkilot.size(); i++){
 			henkLista.addItem(henkilot.elementAt(i).nimi);
 		}
@@ -417,7 +469,7 @@ public class GUI implements iGUI {
 
 	@Override
 	public void halyta() {
-		// TODO Auto-generated method stub
+		//varoitusRuutu.show();
 		
 	}
 
