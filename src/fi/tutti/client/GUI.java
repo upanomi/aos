@@ -9,13 +9,11 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
-
 
 public class GUI implements iGUI {
 	
@@ -45,10 +43,13 @@ public class GUI implements iGUI {
 	private Button huoltoUusi;
 	private Button huoltoKuitt;
 	
+	private DateBox uusiPvm;
 	private DialogBox henkRuutu;
 	private DialogBox laiteRuutu;
 	private DialogBox huoltoRuutu;
 	private DialogBox varoitusRuutu;
+	
+	private Vector<Huolto> huollot1;
 	
 	public GUI(Koti main){
 		main_ = main;
@@ -62,26 +63,26 @@ public class GUI implements iGUI {
 		Vector<Huolto> huollot = new Vector<Huolto>();
 
 		//M‰‰ritell‰‰n tarvittavat komponentit
-		henkLista = new ListBox();
-		laiteLista  = new ListBox();
+		henkLista = new ListBox(); henkLista.setWidth("200px"); henkLista.setHeight("100px"); 
+		laiteLista  = new ListBox(); laiteLista.setWidth("200px"); laiteLista.setHeight("100px");
 		
-		henkSuunn = new Button("Huoltosuunnitelma");
-		henkHist = new Button("Huoltohistoria");
+		henkSuunn = new Button("Huoltosuunnitelma"); henkSuunn.setWidth("200px");
+		henkHist = new Button("Huoltohistoria"); henkHist.setWidth("200px");
 		
-		henkUusi = new Button("Luo uusi");
-		henkPoista = new Button("Poista");
+		henkUusi = new Button("Luo uusi"); henkUusi.setWidth("200px");
+		henkPoista = new Button("Poista"); henkPoista.setWidth("200px");
 		
-		laiteSuunn = new Button("Huoltosuunnitelma");
-		laiteHist = new Button("Huoltohistoria");
+		laiteSuunn = new Button("Huoltosuunnitelma"); laiteSuunn.setWidth("200px");
+		laiteHist = new Button("Huoltohistoria"); laiteHist.setWidth("200px");
 		
-		laiteUusi = new Button("Luo uusi");
+		laiteUusi = new Button("Luo uusi"); laiteUusi.setWidth("200px");
 		laitePoista = new Button("Poista", new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event){
 				main_.poistaLaite(laiteLista.getSelectedItemText());
 				laiteLista.removeItem(laiteLista.getSelectedIndex());
 			}
-		});
+		}); laitePoista.setWidth("200px");
 		huoltoUusi = new Button("Laadi uusi huolto");
 		huoltoKuitt = new Button("Kuittaa");
 		//FlexTable nayttoRuutu = new FlexTable();
@@ -114,17 +115,31 @@ public class GUI implements iGUI {
 				return obj.pvm.toString();
 			}
 		};
+		
+		TextColumn<Huolto> alarmSarake = new TextColumn<Huolto>(){
+			@Override
+			public String getValue(Huolto obj){
+				if(obj.status == 1 || obj.status == 2){
+					return "Ei";
+				}
+				else {
+					return "Kylla";
+				}
+			}
+		};
+		
 		nayttoRuutu.addColumn(idSarake, "Id");
 		nayttoRuutu.addColumn(henkSarake, "Henkilo");
 		nayttoRuutu.addColumn(laiteSarake, "Laite");
 		nayttoRuutu.addColumn(pvmSarake, "Deadline");
+		nayttoRuutu.addColumn(alarmSarake, "Aikataulussa");
 		
 		henkSuunn.addClickHandler(new ClickHandler(){
 			
 			@Override
 			public void onClick(ClickEvent event){
 				//Mit‰ tehd‰‰n kun painetaan nappia
-				Vector<Huolto> huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 1);
+				huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 1);
 				nayttoRuutu.setRowCount(huollot1.size(), true);
 				nayttoRuutu.setRowData(0, huollot1);
 			}
@@ -135,7 +150,7 @@ public class GUI implements iGUI {
 			@Override
 			public void onClick(ClickEvent event){
 				//Mit‰ tehd‰‰n kun painetaan nappia
-				Vector<Huolto> huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 2);
+				huollot1 = main_.haeHuollot(henkLista.getSelectedItemText(), 2);
 				nayttoRuutu.setRowCount(huollot1.size(), true);
 				nayttoRuutu.setRowData(0, huollot1);
 			}
@@ -146,7 +161,7 @@ public class GUI implements iGUI {
 			@Override
 			public void onClick(ClickEvent event){
 				//Mit‰ tehd‰‰n kun painetaan nappia
-				Vector<Huolto> huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 3);
+				huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 3);
 				nayttoRuutu.setRowCount(huollot1.size(), true);
 				nayttoRuutu.setRowData(0, huollot1);
 			}
@@ -157,7 +172,7 @@ public class GUI implements iGUI {
 			@Override
 			public void onClick(ClickEvent event){
 				//Mit‰ tehd‰‰n kun painetaan nappia
-				Vector<Huolto> huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 4);
+				huollot1 = main_.haeHuollot(laiteLista.getSelectedItemText(), 4);
 				nayttoRuutu.setRowCount(huollot1.size(), true);
 				nayttoRuutu.setRowData(0, huollot1);
 			}
@@ -208,7 +223,7 @@ public class GUI implements iGUI {
 		henkRuutu.hide();
 		henkRuutu.setWidth("200px");
 		henkRuutu.setHeight("200px");
-		henkRuutu.setPopupPosition(500, 0);
+		henkRuutu.setPopupPosition(200, 200);
 		
 		final TextBox nimiLaatikko = new TextBox();
 		Button uusiHenkNappi = new Button("OK", new ClickHandler(){
@@ -239,7 +254,7 @@ public class GUI implements iGUI {
 		laiteRuutu.hide();
 		laiteRuutu.setWidth("200px");
 		laiteRuutu.setHeight("200px");
-		laiteRuutu.setPopupPosition(500, 0);
+		laiteRuutu.setPopupPosition(200, 200);
 		
 		final TextBox laiteLaatikko = new TextBox();
 		Button uusiLaiteNappi = new Button("OK", new ClickHandler() {
@@ -271,15 +286,15 @@ public class GUI implements iGUI {
 		huoltoRuutu.hide();
 		huoltoRuutu.setWidth("200px");
 		huoltoRuutu.setHeight("200px");
-		huoltoRuutu.setPopupPosition(500, 0);
+		huoltoRuutu.setPopupPosition(700, 0);
 		
 		ylempi = new HorizontalPanel();
 		alempi = new HorizontalPanel();
 		huoltoTausta = new VerticalPanel();
 		henkLista2 = new ListBox();
 		laiteLista2 = new ListBox();
-		final DateBox uusiPvm = new DateBox();
-		uusiHuoltoOk = new Button("OK");
+		uusiPvm = new DateBox();
+		uusiHuoltoOk = new Button("Lisaa Huolto");
 		
 		henkLista2.setVisibleItemCount(1);
 		Vector<Henkilo> vector1 = main_.haeHenkilot();
@@ -294,15 +309,26 @@ public class GUI implements iGUI {
 			laiteLista2.addItem(vector2.elementAt(i).nimi);
 		}
 		
-		
-		
-		
 		//M‰‰ritell‰‰n varoitusruutu
-		Label varTeksti = new Label();
-		varTeksti.setText("Jokin huolto on myohassa. Tarkista suunnitelma!");
+		varoitusRuutu.hide();
+		varoitusRuutu.setWidth("200px");
+		varoitusRuutu.setHeight("200px");
+		varoitusRuutu.setPopupPosition(200, 200);
+		VerticalPanel varTausta = new VerticalPanel();
+		Button varoitusOK = new Button("Jokin huolto on myohassa. Tarkista suunnitelmat!");
+		varoitusOK.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event){
+				//Mit‰ tehd‰‰n kun painetaan nappia
+				varoitusRuutu.hide();
+			}
+		});
+		varTausta.add(varoitusOK);
+		varoitusRuutu.add(varTausta);
+		varoitusRuutu.setGlassEnabled(true);
 		
-		varoitusRuutu.setText("Varoitus");
-		varoitusRuutu.add(varTeksti);
+		
 		
 		//M‰‰ritell‰‰n henkilˆiden listaus
 		//T‰m‰ tulee automatisoida kunhan p‰‰st‰‰n varsinaiseen toiminnallisuuteen
@@ -404,7 +430,16 @@ public class GUI implements iGUI {
 			public void onClick(ClickEvent event){
 				int rivi = nayttoRuutu.getKeyboardSelectedRow();
 				Huolto valittu = nayttoRuutu.getVisibleItem(rivi);
-				main_.kuittaaHuolto(valittu.id);
+				if(main_.kuittaaHuolto(valittu.id)){ //Jos kuitattiin onnistuneesti (eli ei huoltohistoriassa)
+					for(int i = 0; i < huollot1.size(); i++){
+						if (huollot1.get(i).id == nayttoRuutu.getVisibleItem(rivi).id){
+							huollot1.remove(i);
+							break;
+						}
+					}
+				}
+				nayttoRuutu.setRowCount(huollot1.size(), true);
+				nayttoRuutu.setRowData(0, huollot1);
 			}
 		});
 		
@@ -413,16 +448,22 @@ public class GUI implements iGUI {
 			
 			@Override
 			public void onClick(ClickEvent event){
+				laiteLista2 = new ListBox();
+				henkLista2 = new ListBox();
 				laiteLista2 = laiteLista;
 				henkLista2 = henkLista;
+				ylempi.clear();
 				ylempi.add(henkLista2);
 				ylempi.add(laiteLista2);
+				alempi.clear();
+				uusiPvm = new DateBox();
 				alempi.add(uusiPvm);
 				alempi.add(uusiHuoltoOk);
+				huoltoTausta.clear();	
 				huoltoTausta.add(ylempi);
 				huoltoTausta.add(alempi);
+				huoltoRuutu.clear();
 				huoltoRuutu.add(huoltoTausta);
-				huoltoRuutu.setGlassEnabled(true);
 				huoltoRuutu.show();
 			}
 		});
@@ -435,7 +476,6 @@ public class GUI implements iGUI {
 				huoltoRuutu.hide();
 			}
 		});
-		
 	}
 
 	@Override
