@@ -3,6 +3,5 @@
 <module rename-to="Heippa">
 	<inherits name="com.google.gwt.user.User" />
 	<source path="client"/>
-	<source path="shared"/>
 	<entry-point class="fi.tutti.client.Koti" />
 </module>

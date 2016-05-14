@@ -1,6 +1,8 @@
 package fi.tutti.client;
 
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,10 +18,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import fi.tutti.shared.Henkilo;
-import fi.tutti.shared.Huolto;
-import fi.tutti.shared.Laite;
-
 
 public class GUI implements iGUI {
 	private DialogBox varoitusRuutu;
@@ -27,8 +25,10 @@ public class GUI implements iGUI {
 	private ListBox henkLista;
 	private ListBox laiteLista;
 	private CellTable<Huolto> nayttoRuutu;
+	private Logger logger = Logger.getLogger("GUI");
 	
 	public GUI(Koti main){
+		logger.log(Level.SEVERE, "Rakentaja");
 		main_ = main;
 		alusta();
 	}
@@ -254,26 +254,26 @@ public class GUI implements iGUI {
 		HorizontalPanel ylempi = new HorizontalPanel();
 		HorizontalPanel alempi = new HorizontalPanel();
 		VerticalPanel huoltoTausta = new VerticalPanel();
-		//final ListBox henkLista2 = new ListBox();
-		//final ListBox laiteLista2 = new ListBox();
+		final ListBox henkLista2 = new ListBox();
+		final ListBox laiteLista2 = new ListBox();
 		final DateBox uusiPvm = new DateBox();
 		Button uusiHuoltoOk = new Button("OK");
 		
-		//henkLista2.setVisibleItemCount(1);
+		henkLista2.setVisibleItemCount(1);
 		Vector<Henkilo> vector1 = main_.haeHenkilot();
-		/*henkLista2.clear();
+		henkLista2.clear();
 		for(int i = 0; i < vector1.size(); i++){
 			//henkLista2.addItem(vector1.elementAt(i).nimi);
-		} */
+		} 
 		//laiteLista2.setVisibleItemCount(1);
 		Vector<Laite> vector2 = main_.haeLaitteet();
-		/*laiteLista2.clear();
+		laiteLista2.clear();
 		for(int i = 0; i < vector2.size(); i++){
 			laiteLista2.addItem(vector2.elementAt(i).nimi);
 		}
-		*/
-		ylempi.add(henkLista);
-		ylempi.add(laiteLista);
+		
+		ylempi.add(henkLista2);
+		ylempi.add(laiteLista2);
 		alempi.add(uusiPvm);
 		alempi.add(uusiHuoltoOk);
 		huoltoTausta.add(ylempi);
@@ -417,8 +417,6 @@ public class GUI implements iGUI {
 			public void onClick(ClickEvent event){
 				if(main_.lisaaHuolto(henkLista.getSelectedItemText(), laiteLista.getSelectedItemText(), uusiPvm.getValue())){
 					
-					
-					//TODO
 				}
 				huoltoRuutu.hide();
 			}
